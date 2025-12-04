@@ -1,0 +1,86 @@
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:'Inter',sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.7;overflow-x:hidden}
+.bg-gradient{position:fixed;inset:0;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);z-index:-2}
+
+/* 头部 */
+header.header-glass{background:rgba(255,255,255,0.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.12);position:sticky;top:0;z-index:100;padding:1.2rem 0;text-align:center}
+header h1{font-family:'Orbitron',sans-serif;font-size:3rem;color:#00ff9d;margin:0}
+.tagline{font-size:1.15rem;color:#79c879;margin-top:0.5rem}
+
+/* 导航栏 */
+.nav-bar{background:rgba(0,0,0,0.3);padding:0.8rem 0;margin-top:0.5rem}
+.nav-bar ul{display:flex;justify-content:center;gap:3rem;flex-wrap:wrap}
+.nav-bar a{color:#c9d1d9;text-decoration:none;font-weight:600;transition:.3s;font-size:1.1rem}
+.nav-bar a:hover{color:#00ff9d;text-shadow:0 0 12px #00ff9d}
+
+/* 容器 */
+.container{max-width:1400px;margin:0 auto;padding:2rem 1rem}
+
+/* Hero区 */
+.hero{text-align:center;padding:4rem 1rem}
+.hero h2{font-family:'Orbitron',sans-serif;font-size:3.8rem;color:#fff;margin-bottom:1rem}
+.subtitle{font-size:1.4rem;color:#8b949e;margin-bottom:3rem}
+.hero-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:4rem}
+.feature-card{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);padding:2rem;border-radius:16px;border:1px solid rgba(255,255,255,0.1);text-align:center}
+.feature-card h3{color:#00ff9d;font-size:1.5rem;margin-bottom:0.8rem}
+
+/* 主页卡片区 */
+.coins-section,.advantages-section,.news-section,.faq-section,.security-section{margin:6rem 0}
+.coins-section h2,.advantages-section h2,.news-section h2,.faq-section h2,.security-section h2{font-family:'Orbitron',sans-serif;font-size:3rem;text-align:center;color:#fff;margin-bottom:1rem}
+.section-intro{text-align:center;font-size:1.2rem;color:#8b949e;max-width:900px;margin:0 auto 4rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
+.card{position:relative;overflow:hidden;background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:2rem;text-align:center;transition:all .4s;box-shadow:0 10px 30px rgba(0,0,0,0.4)}
+.card:hover{transform:translateY(-15px);box-shadow:0 25px 50px rgba(0,255,157,0.4)}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,0.08) 50%,transparent 70%);transform:translateX(-100%);animation:shine 5s infinite}
+@keyframes shine{100%{transform:translateX(100%)}}
+.badge{position:absolute;top:15px;left:15px;padding:6px 14px;border-radius:30px;font-weight:900;z-index:2}
+.badge.hot{background:#ff4444;color:#fff}
+.badge.owner{background:#00ff9d;color:#000}
+.card .icon{width:100px;height:100px;border-radius:50%;object-fit:contain;margin:0 auto 1.5rem;transition:all .5s;filter:drop-shadow(0 0 20px rgba(0,255,157,0.4))}
+.card:hover .icon{transform:scale(1.4) rotate(20deg);filter:drop-shadow(0 0 60px #00ff9d)}
+.icon.panda{filter:drop-shadow(0 0 70px #00ff9d) brightness(1.2)}
+.price{font-size:2.1rem;font-weight:700;color:#79c879;margin:1rem 0}
+.price.special{color:#00ff9d;font-size:2.5rem}
+.welfare{color:#00ff9d;font-weight:700;font-size:1.1rem}
+.buy,.buy.special{background:#238636;color:#fff;border:none;padding:16px 32px;border-radius:12px;font-size:1.3rem;cursor:pointer;width:100%;margin-top:1.5rem;font-weight:700;transition:.3s}
+.buy.special{background:#00ff9d;color:#000}
+.buy:hover,.buy.special:hover{transform:scale(1.06);box-shadow:0 0 30px rgba(0,255,157,0.7)}
+
+/* 优势、新闻、FAQ 等区块 */
+.advantage-list,.security-features{list-style:none;max-width:1000px;margin:3rem auto}
+.advantage-list li,.security-features .feature{background:rgba(255,255,255,0.05);margin:1.2rem 0;padding:1.8rem;border-radius:12px;border-left:6px solid #00ff9d}
+.advantage-list strong,.security-features h3{color:#00ff9d}
+.news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
+.news-card{background:rgba(255,255,255,0.05);padding:2rem;border-radius:16px;transition:.3s}
+.news-card:hover{transform:translateY(-8px);background:rgba(255,255,255,0.1)}
+
+/* 确认、支付、处理页通用卡片 */
+.confirm-box.glass,.payment-box.glass,.success-box.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:3rem;margin:3rem auto;max-width:580px;text-align:center;position:relative;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.6)}
+.confirm-box::before,.payment-box::before,.success-box::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,0.08) 50%,transparent 70%);transform:translateX(-100%);animation:shine 4s infinite}
+#coinName{font-family:'Orbitron',sans-serif;font-size:3.2rem;color:#fff}
+.qty-section h3{font-family:'Orbitron',sans-serif;color:#fff;font-size:2rem;margin:1.5rem 0}
+.qty{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin:2rem 0}
+.qty-btn{width:60px;height:60px;background:#238636;color:#fff;border:none;border-radius:50%;font-size:2rem;cursor:pointer;transition:.3s}
+.qty-btn:hover{background:#1a6f2a;transform:scale(1.2)}
+#amount{width:140px;padding:1rem;text-align:center;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:12px;font-size:1.5rem}
+.total,.pay{font-size:2.4rem;margin:1.5rem 0;color:#79c879;font-weight:700}
+#payUSDT{color:#00ff9d}
+.input.glass{width:100%;padding:1.4rem;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:1.2rem;margin:1.5rem 0}
+#payNow,#paid{background:#00ff9d;color:#000;padding:1.4rem;border:none;border-radius:12px;font-size:1.5rem;font-weight:900;cursor:pointer;transition:.3s;width:100%;max-width:460px}
+#payNow:disabled{background:#444;opacity:0.5;cursor:not-allowed}
+#payNow:hover:enabled,#paid:hover{transform:scale(1.05);box-shadow:0 0 40px #00ff9d}
+#qrcode{margin:2.5rem auto;background:#fff;padding:1rem;border-radius:16px;width:280px;height:280px}
+.addr{font-family:monospace;background:rgba(0,0,0,0.3);padding:1.4rem;border-radius:12px;margin:1.5rem 0;word-break:break-all;font-size:1.15rem}
+.success-box h2{font-family:'Orbitron',sans-serif;font-size:3.8rem;color:#00ff9d}
+#backHome{background:#238636;color:#fff;padding:1.2rem 2.5rem;border:none;border-radius:12px;font-size:1.4rem;cursor:pointer;margin-top:2rem;display:none}
+
+/* 底部 */
+.footer{background:rgba(0,0,0,0.5);text-align:center;padding:2.5rem;color:#666;font-size:1rem;margin-top:8rem}
+
+/* 响应式 */
+@media(max-width:768px){
+    .hero h2{font-size:2.8rem}
+    .nav-bar ul{gap:1.5rem;font-size:1rem}
+    .grid{grid-template-columns:1fr}
+    .card .icon{width:90px;height:90px}
+}

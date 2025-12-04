@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Processing - CryptoHub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="https://cryptologos.cc/logos/superverse-super-logo.png?v=040">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <header class="header-glass">
+        <h1>CRYPTOHUB</h1>
+        <p class="tagline">Verifying Payment • Please Wait</p >
+    </header>
+
+    <main class="container">
+        <div class="success-box glass">
+            <h2>Processing Order</h2>
+            <div id="statusText" style="font-size:2.2rem;margin:2rem 0;color:#79c879">
+                Verifying transaction... 30s
+            </div>
+            <p>Order ID: <span id="orderId" style="color:#00ff9d;font-family:monospace;font-size:1.8rem">CH00000000</span></p >
+            <p style="color:#8b949e">Do not close or refresh this page</p >
+            <button id="backHome" style="display:none">Back to Home</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

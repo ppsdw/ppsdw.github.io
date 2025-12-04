@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Payment - CryptoHub</title>
+    <link rel="stylesheet" href="style.css">
+     <link rel="icon" type="image/x-icon" href="https://cryptologos.cc/logos/superverse-super-logo.png?v=040">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <header class="header-glass">
+        <h1>CRYPTOHUB</h1>
+        <p class="tagline">Secure Payment • Instant Delivery</p >
+    </header>
+
+    <main class="container">
+        <div class="payment-box glass">
+            <h2>Scan QR Code to Pay</h2>
+            <p style="font-size:3.5rem;color:#00ff9d;font-weight:900;margin:2rem 0" id="usdtAmount">0 USDT</p >
+            <div id="qrcode"></div>
+            <div class="addr">ERC20 USDT Address:</div>
+            <div class="addr">0xB8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063</div>
+            <button id="paid">I Have Paid</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

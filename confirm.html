@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Confirm Order - CryptoHub</title>
+    <link rel="icon" type="image/x-icon" href="https://cryptologos.cc/logos/superverse-super-logo.png?v=040">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <header class="header-glass">
+        <h1>CRYPTOHUB</h1>
+        <p class="tagline">Confirm Your Order • Secure & Instant</p >
+    </header>
+
+    <main class="container">
+        <div class="confirm-box glass">
+            <h2 id="coinName">Loading...</h2>
+            <p class="rate">Market Price: <span id="marketRate">$0.00</span> USD</p >
+
+            <div class="qty-section">
+                <h3>Select Quantity</h3>
+                <div class="qty">
+                    <button class="qty-btn" id="minus">-</button>
+                    <input type="number" id="amount" value="1" min="1" step="any">
+                    <button class="qty-btn" id="plus">+</button>
+                </div>
+            </div>
+
+            <div class="total">Total: <strong id="totalUSD">0.00</strong> USD</div>
+            <div class="pay">You Pay: <strong id="payUSDT">0.00 USDT</strong></div>
+
+            <input type="text" id="wallet" class="input glass" placeholder="Enter your ERC20 wallet address (0x...)" maxlength="42">
+
+            <button id="payNow">Proceed to Payment</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
