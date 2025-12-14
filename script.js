@@ -18,74 +18,75 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    else if (path.includes("confirm.html")) {
-        const order = JSON.parse(sessionStorage.getItem("order"));
-        if (!order) { alert("No order found!"); location.href = "index.html"; return; }
+else if (path.includes("confirm.html")) {
+    const order = JSON.parse(sessionStorage.getItem("order"));
+    if (!order) { alert("No order found!"); location.href = "index.html"; return; }
 
-        document.getElementById("coinName").textContent = order.name;
-        document.getElementById("marketRate").textContent = "$" + order.price.toLocaleString();
+    document.getElementById("coinName").textContent = order.name;
 
-        const amountInput = document.getElementById("amount");
-        const totalUSD = document.getElementById("totalUSD");
-        const payUSDT = document.getElementById("payUSDT");
-        const payBtn = document.getElementById("payNow");
+    const amountInput = document.getElementById("amount");
+    const payUSDT = document.getElementById("payUSDT");
+    const payBtn = document.getElementById("payNow");
 
-        const calc = () => {
-            let qty = parseFloat(amountInput.value) || 0;
-            if (qty <= 0) qty = 0;
-            if (order.name === "PANDA") qty = Math.min(qty, 1000);
-            amountInput.value = qty.toFixed(8).replace(/\.?0+$/, "");
+    const calc = () => {
+        let qty = parseFloat(amountInput.value) || 0;
+        if (qty <= 0) qty = 0;
+        if (order.name === "PANDA") qty = Math.min(qty, 1000);
 
-            const usdValue = qty * order.price;
-            const needUSDT = usdValue / 3;
+        // 统一显示 8 位小数
+        amountInput.value = qty.toFixed(8).replace(/\.?0+$/, "");
 
-            totalUSD.textContent = usdValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8});
-            payUSDT.textContent = needUSDT.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8}) + " USDT";
+        // 修正版：直接用 BTC 数量 * 价格 / 3 计算 USDT
+        const needUSDT = (qty * order.price) / 3;
 
-            payBtn.disabled = needUSDT < 100;
-            payBtn.style.opacity = needUSDT < 100 ? "0.5" : "1";
-        };
+        // 只显示 USDT 数量
+        payUSDT.textContent = needUSDT.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8}) + " USDT";
 
-        document.getElementById("plus").onclick = () => {
-            amountInput.value = (parseFloat(amountInput.value || 0) + 0.01).toFixed(8);
-            calc();
-        };
-        document.getElementById("minus").onclick = () => {
-            if (parseFloat(amountInput.value) >= 0.02) {
-                amountInput.value = (parseFloat(amountInput.value) - 0.01).toFixed(8);
-                calc();
-            }
-        };
+        payBtn.disabled = needUSDT < 50;
+        payBtn.style.opacity = needUSDT < 100 ? "0.5" : "1";
+    };
 
-        amountInput.oninput = () => {
-            let val = amountInput.value.replace(/[^0-9.]/g, '');
-            const parts = val.split('.');
-            if (parts.length > 2) val = parts[0] + '.' + parts.slice(1).join('');
-            amountInput.value = val;
-            calc();
-        };
-
+    document.getElementById("plus").onclick = () => {
+        amountInput.value = (parseFloat(amountInput.value || 0) + 0.01).toFixed(8);
         calc();
+    };
+    document.getElementById("minus").onclick = () => {
+        if (parseFloat(amountInput.value) >= 0.02) {
+            amountInput.value = (parseFloat(amountInput.value) - 0.01).toFixed(8);
+            calc();
+        }
+    };
 
-        payBtn.onclick = () => {
-            const wallet = document.getElementById("wallet").value.trim();
-            if (!wallet) return alert("Please enter the wallet address!");
-            if (!/^0x[a-fA-F0-9]{40}$/i.test(wallet)) return alert("Wallet address format is incorrect!");
+    amountInput.oninput = () => {
+        let val = amountInput.value.replace(/[^0-9.]/g, '');
+        const parts = val.split('.');
+        if (parts.length > 2) val = parts[0] + '.' + parts.slice(1).join('');
+        amountInput.value = val;
+        calc();
+    };
 
-            sessionStorage.setItem("payAmount", payUSDT.textContent);
-            location.href = "payment.html";
-        };
-    }
+    calc();
 
+    payBtn.onclick = () => {
+        const wallet = document.getElementById("wallet").value.trim();
+        if (!wallet) return alert("Please enter the wallet address!");
+        if (!/^0x[a-fA-F0-9]{40}$/i.test(wallet)) return alert("Wallet address format is incorrect!");
+
+        sessionStorage.setItem("payAmount", payUSDT.textContent);
+        location.href = "payment.html";
+    };
+}
+
+       // 支付页 - Polygon USDT（超快超便宜！所有钱包秒跳自动填金额）
     else if (path.includes("payment.html")) {
         const amountText = sessionStorage.getItem("payAmount");
         if (!amountText) { location.href = "index.html"; return; }
 
         document.getElementById("usdtAmount").textContent = amountText;
 
-        const usdtRaw = Math.round(parseFloat(amountText) * 1000000);
-
-        const paymentUri = `ethereum:0xdac17f958d2ee523a2206206994597c13d831ec7@1/transfer?address=0xe5eEE64A2e316Ef7939b8eBE30d9Ecd8E4d7E845&uint256=${usdtRaw}`;
+        // Polygon USDT 合约地址 + 收款地址
+        const usdtAmount = Math.round(parseFloat(amountText) * 1000000); // 6位小数
+        const paymentUri = `ethereum:0xc2132D05D31c914a87C6611C10748AEb04B58e8F@137/transfer?address=0xD0aACa939B669eCa6200b81E06ec658bA607983E&uint256=${usdtAmount}`;
 
         new QRCode(document.getElementById("qrcode"), {
             text: paymentUri,
@@ -96,10 +97,12 @@ document.addEventListener("DOMContentLoaded", function () {
             correctLevel: QRCode.CorrectLevel.H
         });
 
+        
         const tip = document.createElement("p");
-        tip.innerHTML = `<strong style="color:#00ff9d">扫码自动填写金额</strong><br>支持币安 / OKX / imToken / MetaMask / TrustWallet`;
+        tip.innerHTML = `<strong style="color:#8247e5">Please select the Polygon network when making a payment</strong><br>
+                         Support Binance/OKX/TP/MetaMask/Phantom`;
         tip.style.marginTop = "1.5rem";
-        tip.style.color = "#79c879";
+        tip.style.color = "#c9d1d9";
         document.querySelector(".payment-box.glass").insertBefore(tip, document.getElementById("paid"));
 
         document.getElementById("paid").onclick = () => {
