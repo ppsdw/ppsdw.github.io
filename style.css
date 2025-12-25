@@ -77,10 +77,10 @@ header h1{font-family:'Orbitron',sans-serif;font-size:3rem;color:#00ff9d;margin:
 /* 底部 */
 .footer{background:rgba(0,0,0,0.5);text-align:center;padding:2.5rem;color:#666;font-size:1rem;margin-top:8rem}
 
-/* 响应式 */
 @media(max-width:768px){
     .hero h2{font-size:2.8rem}
-    .nav-bar ul{gap:1.5rem;font-size:1rem}
-    .grid{grid-template-columns:1fr}
-    .card .icon{width:90px;height:90px}
+    .nav-bar ul{gap:1.2rem;font-size:0.95rem;flex-direction:column;align-items:center}
+    .grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+    .card .icon{width:80px;height:80px}
+    .price{font-size:1.9rem}
 }
