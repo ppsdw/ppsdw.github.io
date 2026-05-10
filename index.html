@@ -161,7 +161,7 @@ async function verifyAuth() {
         if (data.auth_codes.includes(userInput)) {
             sessionStorage.setItem('macau_auth', userInput);
             errorMsg.style.display = 'none';
-            window.location.href = "mains.htm";
+            window.location.href = "/mains.htm";
         } else {
             errorMsg.style.display = 'block';
             authInput.style.borderColor = 'var(--error-red)';
