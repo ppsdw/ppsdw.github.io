@@ -5,7 +5,7 @@
     "NMC-ULT-C4-4001", "NMC-ULT-C4-4002", "NMC-ULT-C4-4003", "NMC-ULT-C4-4004", "NMC-ULT-C4-4005", "NMC-ULT-C4-4006", "NMC-ULT-C4-4007", "NMC-ULT-C4-4008", "NMC-ULT-C4-4009", "NMC-ULT-C4-4010",
     "NMC-MAX-D5-5001", "NMC-MAX-D5-5002", "NMC-MAX-D5-5003", "NMC-MAX-D5-5004", "NMC-MAX-D5-5005", "NMC-MAX-D5-5006", "NMC-MAX-D5-5007", "NMC-MAX-D5-5008", "NMC-MAX-D5-5009", "NMC-MAX-D5-5010"
   ],
-  "draw_numbers": ["08", "28", "32", "41", "12"],
+  "draw_numbers": ["08", "29", "32", "41", "12"],
   "system_info": {
     "order_id": "MCO-2026-BATCH-MASTER-001",
     "node": "澳門氹仔機房 (Node-A)",
