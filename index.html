@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
-    <script>
 /**
  * 澳門雲端大數據中心 - 終端安全防護模塊
  * 安全等級：LEVEL 4 (INDUSTRIAL)
  * 警告：未經授權禁止調試源碼
  */
+<script>
+/** 
+ * 澳門雲端大數據中心 - 終端安全防護 (手機兼容版)
+ */
 (function() {
-    // 禁止右鍵
+    // 1. 禁止右鍵（手機上表現為禁止長按彈出菜單）
     document.addEventListener('contextmenu', e => e.preventDefault());
 
-    // 禁止 F12 和開發者快捷鍵
+    // 2. 禁止電腦端常用調試快捷鍵
     document.onkeydown = function(e) {
         if (
             e.keyCode === 123 || 
@@ -22,8 +25,8 @@
         }
     };
 
-    // 核心陷阱：無限 Debugger
-    // 一旦打開控制台，會導致頁面無限暫停，無法操作
+    // 3. 無限 Debugger 陷阱
+    // 這招對付電腦端控制台非常有效，且不會誤傷手機正常瀏覽
     const debugTrap = function() {
         function reload() {
             (function(a) {
@@ -53,19 +56,11 @@
         } catch (e) {}
     };
 
-    // 每秒檢查一次調試狀態
-    setInterval(debugTrap, 1000);
-
-    // 窗口尺寸監控
-    // 檢測到因打開側邊控制台導致的窗口比例異常時，直接清空頁面
-    setInterval(() => {
-        const threshold = 160;
-        if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
-            document.body.innerHTML = '<div style="background:#000;color:#f00;height:100vh;display:flex;align-items:center;justify-content:center;font-family:serif;">TERMINAL LOCKED: UNEXPECTED DEBUGGING DETECTED</div>';
-        }
-    }, 1000);
+    // 每 2 秒執行一次即可，減少手機負擔
+    setInterval(debugTrap, 2000);
 })();
 </script>
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
