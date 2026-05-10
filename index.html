@@ -1,263 +1,181 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>CryptoHub - Premium Crypto Mall</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="https://cryptologos.cc/logos/superverse-super-logo.png?v=040">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>新澳門雲端大數據分析中心 | 身份核驗</title>
+    <style>
+        :root {
+            --primary-blue: #004d99;
+            --bg-main: #f4f7f6;
+            --white: #ffffff;
+            --border-color: #d1d9e6;
+            --text-dark: #2c3e50;
+            --error-red: #e74c3c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-dark); 
+            font-family: 'Helvetica Neue', Arial, 'PingFang HK', 'Microsoft JhengHei', sans-serif; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            background: var(--white);
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-blue);
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-title {
+            font-size: 1.25em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-blue);
+        }
+
+        .header-subtitle {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            color: #34495e;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            outline: none;
+            transition: 0.2s;
+            background: #fafafa;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-blue);
+            background: #fff;
+            box-shadow: 0 0 5px rgba(0,77,153,0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #003366;
+        }
+
+        #errorMessage {
+            margin-top: 15px;
+            font-size: 0.85em;
+            color: var(--error-red);
+            display: none;
+        }
+
+        .footer-info {
+            margin-top: 30px;
+            font-size: 0.75em;
+            color: #bdc3c7;
+        }
+    </style>
 </head>
 <body>
-    <div class="bg-gradient"></div>
-    <header class="header-glass">
-        <h1>CRYPTOHUB</h1>
-        <p class="tagline">Next-Gen Virtual Crypto Mall • Exclusive Internal Rates • Instant Delivery</p >
-        <nav class="nav-bar">
-            <ul>
-                <li><a href=" ">Coins</a ></li>
-                <li><a href="#advantages">Advantages</a ></li>
-                <li><a href="#news">News</a ></li>
-                <li><a href="#faq">FAQ</a ></li>
-                <li><a href="#security">Security</a ></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main class="container">
-        <section class="hero">
-            <h2>Welcome to CryptoHub - Your Trusted Crypto Marketplace</h2>
-            <p class="subtitle">Premium cryptocurrencies at exclusive internal rates. Secure, fast, anonymous platform trusted by thousands worldwide.</p >
-            <div class="hero-features">
-                <div class="feature-card">
-                    <h3>Real-Time Pricing</h3>
-                    <p>Live market data aggregated from CoinGecko, Binance, and Coinbase Pro — updated every 60 seconds.</p >
-                </div>
-                <div class="feature-card">
-                    <h3>Multiple Payment Options</h3>
-                    <p>Seamless transactions using USDT on Polygon network with minimal gas fees.</p >
-                </div>
-                <div class="feature-card">
-                    <h3>Global & Anonymous</h3>
-                    <p>No KYC required • Available in 180+ countries • Multi-language support in progress.</p >
-                </div>
-            </div>
-        </section>
+    <div class="login-card">
+        <div class="logo">
+            <svg fill="white" width="30" height="30" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 4.5l7 14H5l7-14z"/></svg>
+        </div>
+        <div class="header-title">數據中心終端訪問</div>
+        <div class="header-subtitle">MACAU DATA CENTER TERMINAL ACCESS</div>
 
-        <section id="coins" class="coins-section">
-            <h2>Explore Our Coin Selection</h2>
-            <p class="section-intro">Handpicked top cryptocurrencies with exclusive internal discounts. Prices updated December 25, 2025.</p >
-            <div class="grid">
-                <div class="card premium" data-name="BTC" data-price="91363">
-                    <div class="badge hot">HOT</div>
-                    <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=040" alt="BTC" class="icon">
-                    <h3>Bitcoin</h3>
-                    <p class="symbol">BTC</p >
-                    <p class="price">$91,363 USD</p >
-                    <p class="change up">+4.32% 24h</p >
-                    <button class="buy">Buy Now</button>
-                </div>
+        <div class="input-group">
+            <label class="input-label">請輸入授權查看碼：</label>
+            <input type="text" id="authInput" maxlength="32">
+        </div>
+        <button class="btn-submit" onclick="verifyAuth()">驗證身份并進入</button>
+        
+        <div id="errorMessage">⚠ 授權代碼錯誤或無效，請聯繫配給員。</div>
 
-                <div class="card" data-name="ETH" data-price="3032">
-                    <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040" alt="ETH" class="icon">
-                    <h3>Ethereum</h3>
-                    <p class="symbol">ETH</p >
-                    <p class="price">$3,032 USD</p >
-                    <p class="change up">+2.18% 24h</p >
-                    <button class="buy">Buy Now</button>
-                </div>
+        <div class="footer-info">
+            安全等級：LEVEL 4 (INDUSTRIAL)<br>
+            您的訪問 IP 已被記錄，請遵守保密協議。
+        </div>
+    </div>
 
-                <div class="card" data-name="BNB" data-price="889">
-                    <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png?v=040" alt="BNB" class="icon">
-                    <h3>Binance Coin</h3>
-                    <p class="symbol">BNB</p >
-                    <p class="price">$889 USD</p >
-                    <p class="change up">+1.87% 24h</p >
-                    <button class="buy">Buy Now</button>
-                </div>
+    <script>
 
-                <div class="card" data-name="SOL" data-price="138">
-                    <img src="https://cryptologos.cc/logos/solana-sol-logo.png?v=040" alt="SOL" class="icon">
-                    <h3>Solana</h3>
-                    <p class="symbol">SOL</p >
-                    <p class="price">$138 USD</p >
-                    <p class="change down">-0.64% 24h</p >
-                    <button class="buy">Buy Now</button>
-                </div>
+async function verifyAuth() {
+    const userInput = document.getElementById('authInput').value.trim();
+    const errorMsg = document.getElementById('errorMessage');
+    const authInput = document.getElementById('authInput');
+    try {
+        const response = await fetch('config.json');
+        const data = await response.json();
+        
+        if (data.auth_codes.includes(userInput)) {
+            sessionStorage.setItem('macau_auth', userInput);
+            errorMsg.style.display = 'none';
+            window.location.href = "mains.htm";
+        } else {
+            errorMsg.style.display = 'block';
+            authInput.style.borderColor = 'var(--error-red)';
+            authInput.focus();
+        }
+    } catch (error) {}
+}
 
-                <div class="card" data-name="XRP" data-price="2.19">
-                    <img src="https://cryptologos.cc/logos/xrp-xrp-logo.png?v=040" alt="XRP" class="icon">
-                    <h3>Ripple</h3>
-                    <p class="symbol">XRP</p >
-                    <p class="price">$2.19 USD</p >
-                    <p class="change up">+7.21% 24h</p >
-                    <button class="buy">Buy Now</button>
-                </div>
+document.getElementById('authInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        verifyAuth();
+    }
+});
 
-                <div class="card" data-name="ADA" data-price="0.68">
-                    <img src="https://cryptologos.cc/logos/cardano-ada-logo.png?v=040" alt="ADA" class="icon">
-                    <h3>Cardano</h3>
-                    <p class="symbol">ADA</p >
-                    <p class="price">$0.68 USD</p >
-                    <p class="change up">+3.45% 24h</p >
-                    <button class="buy">Buy Now</button>
-                </div>
-
-                <div class="card" data-name="DOGE" data-price="0.28">
-                    <img src="https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=040" alt="DOGE" class="icon">
-                    <h3>Dogecoin</h3>
-                    <p class="symbol">DOGE</p >
-                    <p class="price">$0.28 USD</p >
-                    <p class="change up">+5.12% 24h</p >
-                    <button class="buy">Buy Now</button>
-                </div>
-
-                <div class="card" data-name="TRX" data-price="0.22">
-                    <img src="https://cryptologos.cc/logos/tron-trx-logo.png?v=040" alt="TRX" class="icon">
-                    <h3>TRON</h3>
-                    <p class="symbol">TRX</p >
-                    <p class="price">$0.22 USD</p >
-                    <p class="change up">+1.94% 24h</p >
-                    <button class="buy">Buy Now</button>
-                </div>
-
-                <div class="card" data-name="LINK" data-price="19.85">
-                    <img src="https://cryptologos.cc/logos/chainlink-link-logo.png?v=040" alt="LINK" class="icon">
-                    <h3>Chainlink</h3>
-                    <p class="symbol">LINK</p >
-                    <p class="price">$19.85 USD</p >
-                    <p class="change up">+4.67% 24h</p >
-                    <button class="buy">Buy Now</button>
-                </div>
-
-                <div class="card" data-name="DOT" data-price="8.42">
-                    <img src="https://cryptologos.cc/logos/polkadot-new-dot-logo.png?v=040" alt="DOT" class="icon">
-                    <h3>Polkadot</h3>
-                    <p class="symbol">DOT</p >
-                    <p class="price">$8.42 USD</p >
-                    <p class="change down">-1.23% 24h</p >
-                    <button class="buy">Buy Now</button>
-                </div>
-
-                <div class="card" data-name="AVAX" data-price="42.15">
-                    <img src="https://cryptologos.cc/logos/avalanche-avax-logo.png?v=040" alt="AVAX" class="icon">
-                    <h3>Avalanche</h3>
-                    <p class="symbol">AVAX</p >
-                    <p class="price">$42.15 USD</p >
-                    <p class="change up">+6.88% 24h</p >
-                    <button class="buy">Buy Now</button>
-                </div>
-
-                <div class="card owner-special" data-name="PANDA" data-price="1.4">
-                    <div class="badge owner">OWNER EXCLUSIVE</div>
-                    <img src="https://cryptologos.cc/logos/versions/dogecoin-doge-logo-alternative.svg?v=040" alt="PANDA" class="icon panda">
-                    <h3>PandaCoin</h3>
-                    <p class="symbol">PANDA</p >
-                    <p class="price special">$1.40 USD</p >
-                    <p class="welfare">0.5 PANDA ≈ 0.70 USDT • Owner's Limited Gift</p >
-                    <button class="buy special">Claim Now</button>
-                </div>
-            </div>
-        </section>
-
-
-        <section id="advantages" class="advantages-section">
-            <h2>Our Advantages</h2>
-            <p class="section-intro">Why thousands of users choose CryptoHub every day</p >
-            <ul class="advantage-list">
-                <li><strong>Top-Tier Security</strong>: Military-grade encryption + cold wallet storage for all assets.</li>
-                <li><strong>No KYC Required</strong>: Complete anonymity — no registration, no personal data collected.</li>
-                <li><strong>Lightning Delivery</strong>: Coins arrive in your wallet within 10-30 seconds after confirmation.</li>
-                <li><strong>Best Internal Rates</strong>: Exclusive pricing lower than major exchanges due to direct liquidity partnerships.</li>
-                <li><strong>24/7 Live Support</strong>: Professional team available via live chat and email.</li>
-                <li><strong>Low Fees</strong>: Only network gas fee — no hidden platform charges.</li>
-                <li><strong>Multi-Chain Expansion</strong>: Currently Polygon, more networks coming Q1 2026.</li>
-            </ul>
-        </section>
-
-        <section id="news" class="news-section">
-            <h2>Latest Crypto News</h2>
-            <p class="section-intro">Real-time updates from the crypto world (December 25, 2025)</p >
-            <div class="news-grid">
-                <div class="news-card">
-                    <h3>Bitcoin Breaks $92K Barrier</h3>
-                    <p>Institutional inflows push BTC to new all-time high amid ETF approvals.</p >
-                </div>
-                <div class="news-card">
-                    <h3>Ethereum Dencun Success</h3>
-                    <p>Latest upgrade slashes Layer 2 fees dramatically.</p >
-                </div>
-                <div class="news-card">
-                    <h3>Solana TVL Hits $15B</h3>
-                    <p>DeFi and meme boom drives massive ecosystem growth.</p >
-                </div>
-                <div class="news-card">
-                    <h3>Global Regulatory Clarity</h3>
-                    <p>Major economies finalize stablecoin and exchange frameworks.</p >
-                </div>
-            </div>
-        </section>
-
-
-        <section id="faq" class="faq-section">
-            <h2>Frequently Asked Questions</h2>
-            <p class="section-intro">Everything you need to know before purchasing</p >
-            <div class="faq-accordion">
-                <div class="faq-item">
-                    <h3>How do I make payment?</h3>
-                    <p>Send USDT (Polygon network) to the provided address or scan QR code. No third-party processors.</p >
-                </div>
-                <div class="faq-item">
-                    <h3>Is my transaction safe?</h3>
-                    <p>Yes — end-to-end encryption, on-chain verification, and zero personal data storage.</p >
-                </div>
-                <div class="faq-item">
-                    <h3>What if payment fails?</h3>
-                    <p>Contact our 24/7 support team immediately for manual assistance.</p >
-                </div>
-                <div class="faq-item">
-                    <h3>Are refunds possible?</h3>
-                    <p>Crypto transactions are irreversible, but we resolve any errors on our end promptly.</p >
-                </div>
-                <div class="faq-item">
-                    <h3>How fast is delivery?</h3>
-                    <p>Typically instant — maximum 1 minute after 1 confirmation.</p >
-                </div>
-            </div>
-        </section>
-
-        <section id="security" class="security-section">
-            <h2>Security Assurance</h2>
-            <p class="section-intro">We prioritize your funds and privacy above everything</p >
-            <div class="security-features">
-                <div class="feature">
-                    <h3>AES-256 Encryption</h3>
-                    <p>All sensitive data protected with bank-level encryption.</p >
-                </div>
-                <div class="feature">
-                    <h3>Cold Storage</h3>
-                    <p>99% of assets held offline in multi-signature cold wallets.</p >
-                </div>
-                <div class="feature">
-                    <h3>No KYC / Full Anonymity</h3>
-                    <p>We never ask for or store personal information.</p >
-                </div>
-                <div class="feature">
-                    <h3>Real-Time Monitoring</h3>
-                    <p>AI fraud detection + manual review team 24/7.</p >
-                </div>
-                <div class="feature">
-                    <h3>Proven Track Record</h3>
-                    <p>Over 500,000 successful transactions since 2023 with zero breaches.</p >
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <p>© 2025 CryptoHub. All rights reserved. | Privacy Policy | Terms of Service | support@cryptohubs.online
-
-    <script src="script.js"></script>
+    </script>
 </body>
 </html>
-
