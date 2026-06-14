@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球流浪动物紧急救助基金</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="lang.js"></script>
+    <style>
+        /* 图片放大模态框样式 */
+        .img-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .img-modal.show {
+            display: flex;
+        }
+        .img-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        .img-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 2001;
+        }
+        .img-modal-close:hover {
+            color: #e63946;
+        }
+        @media (max-width: 900px) {
+            .img-modal-close { font-size: 36px; right: 20px; top: 10px; }
+        }
+        /* 名片样式 */
+        .ack-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 20px 15px;
+            text-align: center;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .ack-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+        }
+        .ack-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 12px 0 6px;
+        }
+        .ack-job {
+            font-size: 13px;
+            color: #e63946;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .ack-motto {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.4;
+            font-style: italic;
+        }
+        .avatar-frame {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #e63946;
+            margin: 0 auto 10px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        /* 联系邮箱样式 */
+        .contact-email {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #94a3b8;
+            border-top: 1px solid #2d3748;
+            margin-top: 20px;
+        }
+        .contact-email a {
+            color: #e63946;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .contact-email a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-header">
+    <div class="logo">流浪爪爪 · 紧急生命线</div>
+    <div class="lang-switch">
+        <select id="langSelector" class="lang-dropdown" onchange="switchLanguage(this.value)">
+            <option value="zh" selected>🇨🇳 中文</option>
+            <option value="en">🇺🇸 English</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="ko">🇰🇷 한국어</option>
+            <option value="fr">🇫🇷 Français</option>
+            <option value="de">🇩🇪 Deutsch</option>
+            <option value="ru">🇷🇺 Русский</option>
+            <option value="ar">🇸🇦 العربية</option>
+        </select>
+    </div>
+</div>
+
+<div class="main-layout">
+    <div class="content-section">
+        <div class="badge-container">
+            <span class="status-badge" id="text-badge-temp">⚠️ 紧急救助</span>
+            <span class="group-badge" id="text-badge-group">民间志愿团体 · 无政府资金</span>
+        </div>
+
+        <h1 class="main-title" id="text-main-title">寒冬救助：为受伤流浪狗筹集医疗与口粮</h1>
+
+        <div class="slider-container">
+            <div class="slider-wrapper" id="sliderWrapper"></div>
+            <button class="slider-arrow arrow-left" onclick="moveSlide(-1)">&#10094;</button>
+            <button class="slider-arrow arrow-right" onclick="moveSlide(1)">&#10095;</button>
+        </div>
+
+        <div class="story-card">
+            <h2 id="text-story-title">🐾 流浪狗的艰难求生</h2>
+            <p id="text-story-p1"></p>
+            <p id="text-story-p2"></p>
+            <p id="text-story-p3"></p>
+            <div class="use-grid">
+                <div class="use-item">
+                    <h4 id="text-use-t1"></h4>
+                    <p id="text-use-p1"></p>
+                </div>
+                <div class="use-item">
+                    <h4 id="text-use-t2"></h4>
+                    <p id="text-use-p2"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="allocation-box">
+            <h3 id="text-alloc-title"></h3>
+            <div class="alloc-list">
+                <div class="alloc-row"><div class="alloc-label" id="text-alloc-1"></div><div class="alloc-bar-bg"><div class="alloc-bar-fill fill-med"></div></div></div>
+                <div class="alloc-row"><div class="alloc-label" id="text-alloc-2"></div><div class="alloc-bar-bg"><div class="alloc-bar-fill fill-food"></div></div></div>
+                <div class="alloc-row"><div class="alloc-label" id="text-alloc-3"></div><div class="alloc-bar-bg"><div class="alloc-bar-fill fill-shelter"></div></div></div>
+                <div class="alloc-row"><div class="alloc-label" id="text-alloc-4"></div><div class="alloc-bar-bg"><div class="alloc-bar-fill fill-logistics"></div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="checkout-section">
+        <div class="progress-box">
+            <div class="progress-header"><div><div class="target-goal" id="text-target-lbl"></div><div class="current-raised"><span id="liveBalanceText">0.00</span> <span style="font-size: 20px;">USDT (Polygon)</span></div></div></div>
+            <div class="bar-container"><div class="bar-fill" id="liveProgressBar"></div></div>
+            <div class="progress-footer-stats"><span id="text-live-status"></span><span id="livePercentText">0%</span></div>
+        </div>
+
+        <div class="pay-box">
+            <h3 id="text-pay-title"></h3>
+            <div class="subtitle" id="text-pay-sub"></div>
+            <div class="input-group"><label id="text-lbl-email"></label><input type="email" id="donorEmail" placeholder="yourname@example.com" required></div>
+            <div class="input-group"><label id="text-lbl-notes"></label><input type="text" id="donorNotes" placeholder="..."></div>
+            <div class="method-selector">
+                <div class="method-card active" onclick="selectMethod('moonpay', this)"><div class="method-icon">💳</div><div class="method-title">MoonPay</div></div>
+                <div class="method-card" onclick="selectMethod('wechat', this)"><div class="method-icon">🟢</div><div class="method-title">微信支付</div></div>
+                <div class="method-card" onclick="selectMethod('direct', this)"><div class="method-icon">⛓️</div><div class="method-title">直接发送USDT (Polygon)</div></div>
+            </div>
+            <div class="amount-container" id="amountWrapper">
+                <button class="amount-option active" onclick="setAmount(10, this)">$10</button>
+                <button class="amount-option" onclick="setAmount(25, this)">$25</button>
+                <button class="amount-option" onclick="setAmount(50, this)">$50</button>
+            </div>
+            <button class="action-button btn-moonpay" id="submitActionBtn" onclick="executeDonationFlow()"></button>
+            <div class="direct-address-box" id="directAddressBlock">
+                <p id="text-direct-lbl"></p>
+                <div class="address-row"><span class="address-string">0x1A2c5b65D332fb6F9Af6cf29302d32E85910b7ca</span><button class="copy-btn" onclick="copyCryptoAddress()">复制</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="acknowledgments-section">
+    <h3 id="text-ack-title">💎 发起人 · 聚沙成塔</h3>
+    <div class="ack-grid">
+        <!-- 原有8个名片（1-8） -->
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/img/aweme-avatar/tos-cn-avt-0015_14ce832b6056f81dcabdee903698b0b7~c5_300x300.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-1">陈宇轩</div>
+            <div class="ack-job" id="ack-job-1">软件工程师</div>
+            <div class="ack-motto" id="ack-motto-1">「代码能改变世界，善意也能。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/img/aweme-avatar/tos-cn-i-0813_7aa0d840c8424a01b1fa60f0ac1ab4c2~c5_300x300.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-2">林雨桐</div>
+            <div class="ack-job" id="ack-job-2">宠物医生</div>
+            <div class="ack-motto" id="ack-motto-2">「每一次缝合，都是一次重生。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/img/aweme-avatar/tos-cn-avt-0015_8d3afa5399d675e75335537589907902~c5_300x300.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-3">王浩泽</div>
+            <div class="ack-job" id="ack-job-3">大学生志愿者</div>
+            <div class="ack-motto" id="ack-motto-3">「年轻的热血，应该流在最需要的地方。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_og8QAceIPmASBpNsxFqtBBEA1Dwef1Aq7AEXHa.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-4">赵思敏</div>
+            <div class="ack-job" id="ack-job-4">会计师</div>
+            <div class="ack-motto" id="ack-motto-4">「每一笔捐款都是信任，必须清清楚楚。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_8c10d56e874d5ce17324666b035d4756.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-5">刘子昂</div>
+            <div class="ack-job" id="ack-job-5">供应链主管</div>
+            <div class="ack-motto" id="ack-motto-5">「让每一斤狗粮都准时到达。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813_oUcBBfGa6QA45AzNh8j3ffAYKAEtaEDHRIH7AF.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-6">周小琪</div>
+            <div class="ack-job" id="ack-job-6">平面设计师</div>
+            <div class="ack-motto" id="ack-motto-6">「设计可以温柔，生命必须坚强。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/img/aweme-avatar/tos-cn-i-0813c000-ce_owS2ADiIQAFeJfFfBgpPhQSQ0D7NzA0REQcFAv~c5_300x300.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-7">林益晨</div>
+            <div class="ack-job" id="ack-job-7">自由摄影师</div>
+            <div class="ack-motto" id="ack-motto-7">「拍完照，顺手帮狗狗擦擦眼睛。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/img/aweme-avatar/tos-cn-i-0813c001_oky4gsDAAIpAFCbq8CfC9qLZoeJt6uAlAEANRE~c5_300x300.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-8">陈航轩</div>
+            <div class="ack-job" id="ack-job-8">咖啡师</div>
+            <div class="ack-motto" id="ack-motto-8">「下班后把店里的咖啡渣拿去铺狗舍除味。」</div>
+        </div>
+
+        <!-- 新增男孩4人 -->
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_3438e2228bf6b95280226ed49c6e43b0.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-9">何子睿</div>
+            <div class="ack-job" id="ack-job-9">游戏策划</div>
+            <div class="ack-motto" id="ack-motto-9">「策划虚拟世界，也想拯救真实生命。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813_676faf6f32a34bae86b86446ad21e175.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-10">周澄</div>
+            <div class="ack-job" id="ack-job-10">健身教练</div>
+            <div class="ack-motto" id="ack-motto-10">「撸铁之外，也要给流浪狗一点力量。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/img/aweme-avatar/tos-cn-avt-0015_c1e6ec6364ae2398c5f279cb2c4018b0~c5_300x300.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-11">陆一鸣</div>
+            <div class="ack-job" id="ack-job-11">烘焙师</div>
+            <div class="ack-motto" id="ack-motto-11">「揉面团的手，也可以帮狗狗梳毛。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/img/aweme-avatar/douyin-user-image-file_6321d936c71a14c03e4dae192fcf7df2~c5_300x300.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-12">吴一凡</div>
+            <div class="ack-job" id="ack-job-12">动画师</div>
+            <div class="ack-motto" id="ack-motto-12">「每一帧动画都很慢，但救狗不能慢。」</div>
+        </div>
+
+        <!-- 新增女孩3人 -->
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_44adc979de65df2ffca8772d50d7c777.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-13">苏晚晴</div>
+            <div class="ack-job" id="ack-job-13">花艺师</div>
+            <div class="ack-motto" id="ack-motto-13">「包扎花束，也包扎过流浪狗的伤口。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/img/aweme-avatar/tos-cn-i-0813_be3271bc52624f2d996b1eeb8098fb42~c5_300x300.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-14">夏晚宁</div>
+            <div class="ack-job" id="ack-job-14">插画师</div>
+            <div class="ack-motto" id="ack-motto-14">「画板上是色彩，救助站是温度。」</div>
+        </div>
+        <div class="ack-item">
+            <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/img/aweme-avatar/tos-cn-avt-0015_ce34c8b8c61c64910eda83392b9b493a~c5_300x300.jpeg?from=2956013662')"></div>
+            <div class="ack-name" id="ack-name-15">宋悠然</div>
+            <div class="ack-job" id="ack-job-15">品牌策划</div>
+            <div class="ack-motto" id="ack-motto-15">「帮流浪狗讲个好故事，才能被领养。」</div>
+        </div>
+    </div>
+</div>
+
+<!-- 联系邮箱 -->
+<div class="contact-email">
+    <span id="contactEmailLabel">📧 联系邮箱：</span>
+    <a href="mailto:xiaobei.py@gmail.com">xiaobei.py@gmail.com</a>
+</div>
+
+<div class="custom-modal" id="errorModal"><div class="modal-content"><div class="modal-icon">⚠️</div><div class="modal-text" id="modalErrorText"></div><button class="modal-close" onclick="closeModal()">关闭</button></div></div>
+
+<div id="imageModal" class="img-modal" onclick="closeImageModal()">
+    <span class="img-modal-close" onclick="closeImageModal()">&times;</span>
+    <img id="modalImage" src="" alt="放大图片">
+</div>
+
+<script>
+    let currentSlide = 0;
+    let selectedAmount = 10;
+    let selectedMethod = 'moonpay';
+    let currentLanguage = 'zh';
+    const targetGoal = 4500;
+    const ownerWallet = "0x1A2c5b65D332fb6F9Af6cf29302d32E85910b7ca";
+
+    function generateSlides() {
+        const wrapper = document.getElementById('sliderWrapper');
+        wrapper.innerHTML = '';
+        for (let i = 1; i <= 36; i++) {
+            const slide = document.createElement('div');
+            slide.className = 'slide';
+            const imgUrl = `img/${i}.png`;
+            slide.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${imgUrl}')`;
+            slide.style.backgroundSize = 'cover';
+            slide.style.backgroundPosition = 'center';
+            slide.style.cursor = 'pointer';
+            slide.addEventListener('click', (function(url) {
+                return function() { showImageModal(url); };
+            })(imgUrl));
+            wrapper.appendChild(slide);
+        }
+    }
+
+    function showImageModal(imgUrl) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        modalImg.src = imgUrl;
+        modal.classList.add('show');
+    }
+
+    function closeImageModal() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.remove('show');
+    }
+
+    function initSlider() {
+        const wrapper = document.getElementById('sliderWrapper');
+        const slides = wrapper.querySelectorAll('.slide');
+        const slideCount = slides.length;
+        if (slideCount === 0) return;
+        wrapper.style.width = (slideCount * 100) + '%';
+        slides.forEach(slide => { slide.style.width = (100 / slideCount) + '%'; });
+        window.moveSlide = function(direction) {
+            currentSlide = (currentSlide + direction + slideCount) % slideCount;
+            wrapper.style.transform = `translateX(-${currentSlide * (100 / slideCount)}%)`;
+        };
+    }
+
+    function switchLanguage(lang) {
+        if (!langData[lang]) lang = 'zh';
+        const data = langData[lang];
+        currentLanguage = lang;
+
+        document.getElementById('text-badge-temp').innerText = data.badgeTemp;
+        document.getElementById('text-badge-group').innerText = data.badgeGroup;
+        document.getElementById('text-main-title').innerText = data.mainTitle;
+        document.getElementById('text-story-title').innerText = data.storyTitle;
+        document.getElementById('text-story-p1').innerText = data.storyP1;
+        document.getElementById('text-story-p2').innerText = data.storyP2;
+        document.getElementById('text-story-p3').innerText = data.storyP3;
+        document.getElementById('text-use-t1').innerText = data.useT1;
+        document.getElementById('text-use-p1').innerText = data.useP1;
+        document.getElementById('text-use-t2').innerText = data.useT2;
+        document.getElementById('text-use-p2').innerText = data.useP2;
+        document.getElementById('text-alloc-title').innerText = data.allocTitle;
+        document.getElementById('text-alloc-1').innerText = data.alloc1;
+        document.getElementById('text-alloc-2').innerText = data.alloc2;
+        document.getElementById('text-alloc-3').innerText = data.alloc3;
+        document.getElementById('text-alloc-4').innerText = data.alloc4;
+        document.getElementById('text-target-lbl').innerText = data.targetLbl;
+        document.getElementById('text-live-status').innerText = data.liveStatus;
+        document.getElementById('text-pay-title').innerText = data.payTitle;
+        document.getElementById('text-pay-sub').innerText = data.paySub;
+        document.getElementById('text-lbl-email').innerText = data.lblEmail;
+        document.getElementById('text-lbl-notes').innerText = data.lblNotes;
+        document.getElementById('text-direct-lbl').innerText = data.directLbl;
+        document.getElementById('text-ack-title').innerText = data.ackTitle;
+        // 更新邮箱标签
+        if (data.contactEmailLabel) {
+            document.getElementById('contactEmailLabel').innerText = data.contactEmailLabel;
+        }
+
+        // 动态更新所有名片
+        const allItems = document.querySelectorAll('.ack-item');
+        allItems.forEach((item, index) => {
+            const idx = index + 1;
+            const nameEl = item.querySelector('.ack-name');
+            const jobEl = item.querySelector('.ack-job');
+            const mottoEl = item.querySelector('.ack-motto');
+            if (nameEl && data[`ackName${idx}`]) nameEl.innerText = data[`ackName${idx}`];
+            if (jobEl && data[`ackJob${idx}`]) jobEl.innerText = data[`ackJob${idx}`];
+            if (mottoEl && data[`ackMotto${idx}`]) mottoEl.innerText = data[`ackMotto${idx}`];
+        });
+
+        updateActionButtonStyle();
+
+        const percentSpan = document.getElementById('livePercentText');
+        if (percentSpan && data.percentSuffix) {
+            let currentPercent = percentSpan.innerText.match(/[\d.]+%?/);
+            if (currentPercent) {
+                percentSpan.innerText = currentPercent[0] + ' ' + data.percentSuffix;
+            } else {
+                percentSpan.innerText = '0% ' + data.percentSuffix;
+            }
+        }
+    }
+
+    function moveSlide(direction) { if(window.moveSlide) window.moveSlide(direction); }
+    function setAmount(amount, el) { selectedAmount = amount; document.querySelectorAll('.amount-option').forEach(btn=>btn.classList.remove('active')); el.classList.add('active'); }
+
+    function selectMethod(method, el) {
+        // 微信支付：直接弹窗提示，不切换支付方式
+        if (method === 'wechat') {
+            showModal(currentLanguage === 'zh' ? "微信支付暂未开通，请使用 MoonPay 或直接发送 USDT。" : "WeChat Pay is not available. Please use MoonPay or direct USDT.");
+            return;
+        }
+        
+        selectedMethod = method;
+        document.querySelectorAll('.method-card').forEach(c=>c.classList.remove('active'));
+        el.classList.add('active');
+        
+        const aw = document.getElementById('amountWrapper');
+        const dab = document.getElementById('directAddressBlock');
+        
+        if (method === 'moonpay') {
+            aw.style.display = 'grid';
+            dab.style.display = 'none';
+        } else if (method === 'direct') {
+            aw.style.display = 'none';
+            dab.style.display = 'block';
+        }
+        updateActionButtonStyle();
+    }
+
+    function updateActionButtonStyle() {
+        const btn = document.getElementById('submitActionBtn');
+        if (selectedMethod === 'moonpay') {
+            btn.className = "action-button btn-moonpay";
+            btn.innerHTML = langData[currentLanguage].btnMoonPay;
+            btn.style.display = 'block';
+        } else if (selectedMethod === 'direct') {
+            btn.className = "action-button btn-direct";
+            btn.innerHTML = langData[currentLanguage].btnDirect;
+            btn.style.display = 'block';
+        } else {
+            btn.style.display = 'none';
+        }
+    }
+
+    function showModal(msg) { document.getElementById('modalErrorText').innerHTML = msg; document.getElementById('errorModal').classList.add('show'); }
+    function closeModal() { document.getElementById('errorModal').classList.remove('show'); }
+    function copyCryptoAddress() { navigator.clipboard.writeText(ownerWallet); alert("地址已复制"); }
+
+    function executeDonationFlow() {
+        const email = document.getElementById('donorEmail').value;
+        if(!email || !email.includes('@')) {
+            alert(currentLanguage === 'zh' ? "请填写有效的邮箱地址，以便我们向您汇报救命进展。" : "Please provide a valid email address.");
+            return;
+        }
+        if (selectedMethod === 'moonpay') {
+            const url = `https://buy.moonpay.com/?walletAddress=${ownerWallet}&currencyCode=usdt&baseCurrencyCode=usd&baseCurrencyAmount=${selectedAmount}`;
+            window.open(url, 'MoonPayWindow', 'width=500,height=700');
+        } else if (selectedMethod === 'direct') {
+            alert(currentLanguage === 'zh' ? "感谢您！志愿者节点正在监听链上转账，您的爱心将在确认后实时显示。" : "Thank you! Your donation will be updated shortly.");
+        }
+    }
+
+    async function fetchLiveBalance() {
+        const walletAddress = ownerWallet;
+        const usdtContract = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
+        const data = "0x70a08231" + walletAddress.slice(2).padStart(64, '0');
+        try {
+            const response = await fetch('https://polygon-rpc.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: 1,
+                    method: 'eth_call',
+                    params: [{ to: usdtContract, data: data }, 'latest']
+                })
+            });
+            const result = await response.json();
+            if (result && result.result && result.result !== '0x') {
+                const balance = parseInt(result.result, 16) / 1e6;
+                renderProgress(balance);
+            } else {
+                renderProgress(0);
+            }
+        } catch (error) {
+            console.error('查询失败:', error);
+            renderProgress(0);
+        }
+    }
+
+    function renderProgress(balance) {
+        document.getElementById('liveBalanceText').innerHTML = balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        let p = (balance / targetGoal) * 100;
+        if (p > 100) p = 100;
+        document.getElementById('liveProgressBar').style.width = `${p}%`;
+        document.getElementById('livePercentText').innerHTML = `${p.toFixed(1)}% ${langData[currentLanguage].percentSuffix}`;
+    }
+
+    window.onload = function() {
+        generateSlides();
+        initSlider();
+        switchLanguage('zh');
+        fetchLiveBalance();
+        setInterval(fetchLiveBalance, 30000);
+    };
+</script>
+</body>
+</html>
