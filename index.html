@@ -107,6 +107,21 @@
         .contact-email a:hover {
             text-decoration: underline;
         }
+        /* 禁用微信支付样式 */
+        .method-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(0.2);
+        }
+        .method-card.disabled:hover {
+            transform: none;
+            background: #1a1d29;
+        }
+        .disabled-badge {
+            font-size: 10px;
+            color: #e63946;
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
@@ -185,7 +200,11 @@
             <div class="input-group"><label id="text-lbl-notes"></label><input type="text" id="donorNotes" placeholder="..."></div>
             <div class="method-selector">
                 <div class="method-card active" onclick="selectMethod('moonpay', this)"><div class="method-icon">💳</div><div class="method-title">MoonPay</div></div>
-                <div class="method-card" onclick="selectMethod('wechat', this)"><div class="method-icon">🟢</div><div class="method-title">微信支付</div></div>
+                <div class="method-card disabled" id="wechatCard" style="cursor: not-allowed;">
+                    <div class="method-icon">🟢</div>
+                    <div class="method-title">微信支付</div>
+                    <div class="disabled-badge">暂未开通</div>
+                </div>
                 <div class="method-card" onclick="selectMethod('direct', this)"><div class="method-icon">⛓️</div><div class="method-title">直接发送USDT (Polygon)</div></div>
             </div>
             <div class="amount-container" id="amountWrapper">
@@ -196,7 +215,10 @@
             <button class="action-button btn-moonpay" id="submitActionBtn" onclick="executeDonationFlow()"></button>
             <div class="direct-address-box" id="directAddressBlock">
                 <p id="text-direct-lbl"></p>
-                <div class="address-row"><span class="address-string">0x1A2c5b65D332fb6F9Af6cf29302d32E85910b7ca</span><button class="copy-btn" onclick="copyCryptoAddress()">复制</button></div>
+                <div class="address-row">
+                    <span class="address-string">0x1A2c5b65D332fb6F9Af6cf29302d32E85910b7ca</span>
+                    <button class="copy-btn" onclick="copyCryptoAddress()">复制</button>
+                </div>
             </div>
         </div>
     </div>
@@ -205,7 +227,7 @@
 <div class="acknowledgments-section">
     <h3 id="text-ack-title">💎 发起人 · 聚沙成塔</h3>
     <div class="ack-grid">
-        <!-- 原有8个名片（1-8） -->
+        <!-- 1-8 -->
         <div class="ack-item">
             <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/img/aweme-avatar/tos-cn-avt-0015_14ce832b6056f81dcabdee903698b0b7~c5_300x300.jpeg?from=2956013662')"></div>
             <div class="ack-name" id="ack-name-1">陈宇轩</div>
@@ -254,7 +276,6 @@
             <div class="ack-job" id="ack-job-8">咖啡师</div>
             <div class="ack-motto" id="ack-motto-8">「下班后把店里的咖啡渣拿去铺狗舍除味。」</div>
         </div>
-
         <!-- 新增男孩4人 -->
         <div class="ack-item">
             <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_3438e2228bf6b95280226ed49c6e43b0.jpeg?from=2956013662')"></div>
@@ -280,7 +301,6 @@
             <div class="ack-job" id="ack-job-12">动画师</div>
             <div class="ack-motto" id="ack-motto-12">「每一帧动画都很慢，但救狗不能慢。」</div>
         </div>
-
         <!-- 新增女孩3人 -->
         <div class="ack-item">
             <div class="avatar-frame" style="background-image: url('https://p3-pc.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_44adc979de65df2ffca8772d50d7c777.jpeg?from=2956013662')"></div>
@@ -396,7 +416,6 @@
         document.getElementById('text-lbl-notes').innerText = data.lblNotes;
         document.getElementById('text-direct-lbl').innerText = data.directLbl;
         document.getElementById('text-ack-title').innerText = data.ackTitle;
-        // 更新邮箱标签
         if (data.contactEmailLabel) {
             document.getElementById('contactEmailLabel').innerText = data.contactEmailLabel;
         }
@@ -430,19 +449,12 @@
     function setAmount(amount, el) { selectedAmount = amount; document.querySelectorAll('.amount-option').forEach(btn=>btn.classList.remove('active')); el.classList.add('active'); }
 
     function selectMethod(method, el) {
-        // 微信支付：直接弹窗提示，不切换支付方式
-        if (method === 'wechat') {
-            showModal(currentLanguage === 'zh' ? "微信支付暂未开通，请使用 MoonPay 或直接发送 USDT。" : "WeChat Pay is not available. Please use MoonPay or direct USDT.");
-            return;
-        }
-        
+        if (method === 'wechat') return;
         selectedMethod = method;
-        document.querySelectorAll('.method-card').forEach(c=>c.classList.remove('active'));
+        document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
-        
         const aw = document.getElementById('amountWrapper');
         const dab = document.getElementById('directAddressBlock');
-        
         if (method === 'moonpay') {
             aw.style.display = 'grid';
             dab.style.display = 'none';
@@ -482,7 +494,7 @@
             const url = `https://buy.moonpay.com/?walletAddress=${ownerWallet}&currencyCode=usdt&baseCurrencyCode=usd&baseCurrencyAmount=${selectedAmount}`;
             window.open(url, 'MoonPayWindow', 'width=500,height=700');
         } else if (selectedMethod === 'direct') {
-            alert(currentLanguage === 'zh' ? "感谢您！志愿者节点正在监听链上转账，您的爱心将在确认后实时显示。" : "Thank you! Your donation will be updated shortly.");
+            alert(currentLanguage === 'zh' ? "请向上方地址转入USDT（Polygon网络），转账后余额将自动更新。感谢您的支持！" : "Please transfer USDT (Polygon) to the address above. The balance will update automatically. Thank you!");
         }
     }
 
