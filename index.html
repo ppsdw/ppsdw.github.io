@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全球流浪动物紧急救助基金</title>
+    <title>流浪动物紧急救助基金</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="lang.js"></script>
@@ -122,6 +122,20 @@
             color: #e63946;
             margin-top: 4px;
         }
+        /* 支付渠道图片图标 */
+        .method-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+        }
+        .method-icon img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -199,13 +213,25 @@
             <div class="input-group"><label id="text-lbl-email"></label><input type="email" id="donorEmail" placeholder="yourname@example.com" required></div>
             <div class="input-group"><label id="text-lbl-notes"></label><input type="text" id="donorNotes" placeholder="..."></div>
             <div class="method-selector">
-                <div class="method-card active" onclick="selectMethod('moonpay', this)"><div class="method-icon">💳</div><div class="method-title">MoonPay</div></div>
-                <div class="method-card disabled" id="wechatCard" style="cursor: not-allowed;">
-                    <div class="method-icon">🟢</div>
-                    <div class="method-title">微信支付</div>
-                    <div class="disabled-badge">暂未开通</div>
+                <div class="method-card active" onclick="selectMethod('moonpay', this)">
+                    <div class="method-icon">
+                        <img src="Paymentchannels_Moonpay.png" alt="MoonPay">
+                    </div>
+                    <div class="method-title">MoonPay</div>
                 </div>
-                <div class="method-card" onclick="selectMethod('direct', this)"><div class="method-icon">⛓️</div><div class="method-title">直接发送USDT (Polygon)</div></div>
+                <div class="method-card disabled" id="wechatCard" style="cursor: not-allowed;">
+                    <div class="method-icon">
+                        <img src="wxpay.png" alt="WeChat Pay">
+                    </div>
+                    <div class="method-title" id="text-method-wechat">微信支付</div>
+                    <div class="disabled-badge" id="text-wechat-badge">暂未开通</div>
+                </div>
+                <div class="method-card" onclick="selectMethod('direct', this)">
+                    <div class="method-icon">
+                        <img src="USDT.png" alt="USDT">
+                    </div>
+                    <div class="method-title" id="text-method-direct">直接发送USDT (Polygon)</div>
+                </div>
             </div>
             <div class="amount-container" id="amountWrapper">
                 <button class="amount-option active" onclick="setAmount(10, this)">$10</button>
@@ -217,7 +243,7 @@
                 <p id="text-direct-lbl"></p>
                 <div class="address-row">
                     <span class="address-string">0x1A2c5b65D332fb6F9Af6cf29302d32E85910b7ca</span>
-                    <button class="copy-btn" onclick="copyCryptoAddress()">复制</button>
+                    <button class="copy-btn" onclick="copyCryptoAddress()" id="text-copy-btn">复制</button>
                 </div>
             </div>
         </div>
@@ -329,7 +355,7 @@
     <a href="mailto:xiaobei.py@gmail.com">xiaobei.py@gmail.com</a>
 </div>
 
-<div class="custom-modal" id="errorModal"><div class="modal-content"><div class="modal-icon">⚠️</div><div class="modal-text" id="modalErrorText"></div><button class="modal-close" onclick="closeModal()">关闭</button></div></div>
+<div class="custom-modal" id="errorModal"><div class="modal-content"><div class="modal-icon">⚠️</div><div class="modal-text" id="modalErrorText"></div><button class="modal-close" onclick="closeModal()" id="text-modal-close">关闭</button></div></div>
 
 <div id="imageModal" class="img-modal" onclick="closeImageModal()">
     <span class="img-modal-close" onclick="closeImageModal()">&times;</span>
@@ -416,9 +442,15 @@
         document.getElementById('text-lbl-notes').innerText = data.lblNotes;
         document.getElementById('text-direct-lbl').innerText = data.directLbl;
         document.getElementById('text-ack-title').innerText = data.ackTitle;
+
         if (data.contactEmailLabel) {
             document.getElementById('contactEmailLabel').innerText = data.contactEmailLabel;
         }
+        if (data.methodWechat)  document.getElementById('text-method-wechat').innerText  = data.methodWechat;
+        if (data.wechatBadge)   document.getElementById('text-wechat-badge').innerText   = data.wechatBadge;
+        if (data.methodDirect)  document.getElementById('text-method-direct').innerText  = data.methodDirect;
+        if (data.copyBtn)       document.getElementById('text-copy-btn').innerText       = data.copyBtn;
+        if (data.modalClose)    document.getElementById('text-modal-close').innerText    = data.modalClose;
 
         // 动态更新所有名片
         const allItems = document.querySelectorAll('.ack-item');
@@ -482,7 +514,11 @@
 
     function showModal(msg) { document.getElementById('modalErrorText').innerHTML = msg; document.getElementById('errorModal').classList.add('show'); }
     function closeModal() { document.getElementById('errorModal').classList.remove('show'); }
-    function copyCryptoAddress() { navigator.clipboard.writeText(ownerWallet); alert("地址已复制"); }
+    function copyCryptoAddress() {
+        navigator.clipboard.writeText(ownerWallet);
+        const msg = { zh: "地址已复制", en: "Address copied", es: "Dirección copiada", ja: "アドレスをコピーしました", ko: "주소가 복사되었습니다", fr: "Adresse copiée", de: "Adresse kopiert", ru: "Адрес скопирован", ar: "تم نسخ العنوان" };
+        alert(msg[currentLanguage] || "Copied");
+    }
 
     function executeDonationFlow() {
         const email = document.getElementById('donorEmail').value;
